@@ -23,9 +23,9 @@ pipeline {
 		 }
 		stage('Maven Build') {
 			steps {
-				 echo 'Compile the code'
+				 echo 'Build/Compile the code'
 				 dir('devops'){
-					sh 'sudo ./mvnw clean compile'
+					sh 'sudo ./mvnw clean package'
 				 }
 			}
 	
