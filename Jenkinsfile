@@ -30,6 +30,19 @@ pipeline {
 			}
 	
 		 }
+		 stage ('create docker registry url') {
+          steps {
+            script {
+              
+                   def aws_account_number = "607187345607"
+                   echo "${aws_account_number}"
+                   def region = "eu-west-1"
+                   def aws_url = aws_account_number.trim() + ".dkr.ecr." + region + ".amazonaws.com"
+				   echo "---------------------------------------------------"
+				   echo "${aws_url}"
+            }
+          }
+        }
 		stage('Test On Master') {
 			 steps {
 				echo "Task1 on Master"
