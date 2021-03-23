@@ -14,6 +14,7 @@ pipeline {
 					dir('devops'){
 						echo 'Cloning from Github'
 						git branch: 'main', credentialsId: 'amishav2509', url: 'https://github.com/amishav2509/MobileBillingProject.git'
+						sh "chmod -R 777 devops"
 					}
 				}
 			}
