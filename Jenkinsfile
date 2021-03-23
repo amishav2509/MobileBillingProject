@@ -14,8 +14,9 @@ pipeline {
 					dir('devops'){
 						echo 'Cloning from Github'
 						git branch: 'main', credentialsId: 'amishav2509', url: 'https://github.com/amishav2509/MobileBillingProject.git'
-						sh "chmod -R 777 devops"
+						
 					}
+					sh "sudo chmod -R 777 devops"
 				}
 			}
 	
@@ -24,7 +25,7 @@ pipeline {
 			steps {
 				 echo 'Compile the code'
 				 dir('devops'){
-					sh './mvnw clean compile'
+					sh 'sudo ./mvnw clean compile'
 				 }
 			}
 	
