@@ -54,6 +54,7 @@ pipeline {
                               docker.build("${aws_url}/${dockerImageName}:${BUILD_NUMBER}","-f MobileBillingDockerfile .").push()
                       }
                   }
+			}
         }
     }
 }
