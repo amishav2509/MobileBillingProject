@@ -46,9 +46,9 @@ pipeline {
           }
   		stage ('docker build and push the images') {
               steps {
-                  dir('devops'){
-                      script {
-                              dockerImageName = "mobilebilling"
+                 script {
+					 dir('devops'){
+							  dockerImageName = "mobilebilling"
                               def awsLogin  = sh(script: "aws ecr get-login --region eu-central-1 --no-include-email", returnStdout: true)
                               sh "${awsLogin}"
                               docker.build("${aws_url}/${dockerImageName}:${BUILD_NUMBER}","-f ./MobileBillingDockerfile .").push()
