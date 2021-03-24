@@ -25,7 +25,8 @@ pipeline {
 			steps {
 				 echo 'Build/Compile the code'
 				 dir('devops'){
-					sh 'sudo ./mvnw clean package jenkins:jenkins'
+					sh 'sudo ./mvnw clean package'
+					sh 'sudo chown -R jenkins:jenkins devops' 
 				 }
 			}
 	
