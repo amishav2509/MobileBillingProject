@@ -50,7 +50,6 @@ pipeline {
                  script {
 					 dir('devops'){
 							  dockerImageName = "mobilebilling"
-							  echo 
                               def awsLogin  = sh(script: "aws ecr get-login --region eu-central-1 --no-include-email", returnStdout: true)
                               sh "${awsLogin}"
                               docker.build("${aws_url}/${dockerImageName}:${BUILD_NUMBER}","-f devops/MobileBillingDockerfile .").push()
