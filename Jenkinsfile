@@ -46,7 +46,7 @@ pipeline {
         }
 		stage ('docker build and push the images') {
             steps {
-                dir("devops/${parametersMaps.releaseName}/Docker/${parametersMaps.profile}"){
+                dir("devops}"){
                     script {
                             dockerImageName = "mobilebilling".toLowerCase()
                             def awsLogin  = sh(script: "aws ecr get-login --region eu-central-1 --no-include-email", returnStdout: true)

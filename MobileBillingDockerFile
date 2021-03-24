@@ -1,0 +1,4 @@
+FROM appdynamicsagent-alpine-oraclejdk8
+VOLUME /tmp
+RUN mkdir /classpath && chmod -R 774 /classpath
+ADD *.war MobileBillingProject.war
