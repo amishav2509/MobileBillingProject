@@ -1,3 +1,4 @@
+def aws_url
 pipeline {
     agent any
     stages {
@@ -38,7 +39,7 @@ pipeline {
                      def aws_account_number = "607187345607"
                      echo "${aws_account_number}"
                      def region = "eu-central-1"
-                     def aws_url = aws_account_number.trim() + ".dkr.ecr." + region + ".amazonaws.com"
+                     aws_url = aws_account_number.trim() + ".dkr.ecr." + region + ".amazonaws.com"
   				   echo "---------------------------------------------------"
   				   echo "${aws_url}"
               }
@@ -49,6 +50,7 @@ pipeline {
                  script {
 					 dir('devops'){
 							  dockerImageName = "mobilebilling"
+							  echo 
                               def awsLogin  = sh(script: "aws ecr get-login --region eu-central-1 --no-include-email", returnStdout: true)
                               sh "${awsLogin}"
                               docker.build("${aws_url}/${dockerImageName}:${BUILD_NUMBER}","-f devops/MobileBillingDockerfile .").push()
