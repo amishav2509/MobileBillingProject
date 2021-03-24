@@ -26,7 +26,7 @@ pipeline {
 				 echo 'Build/Compile the code'
 				 dir('devops'){
 					sh 'sudo ./mvnw clean package'
-					sh 'sudo chown -R jenkins:jenkins devops' 
+					sh 'sudo chown -R jenkins:jenkins /var/lib/jenkins/workspace' 
 				 }
 			}
 	
