@@ -55,7 +55,6 @@ pipeline {
                     }
                 }
             }
-        }
 		stage('Test On Master') {
 			 steps {
 				echo "Task1 on Master"
