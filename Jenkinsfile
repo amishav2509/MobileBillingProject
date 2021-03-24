@@ -25,7 +25,7 @@ pipeline {
 			steps {
 				 echo 'Build/Compile the code'
 				 dir('devops'){
-					sh 'sudo ./mvnw clean package'
+					sh 'sudo ./mvnw clean package jenkins:jenkins'
 				 }
 			}
 	
@@ -42,6 +42,18 @@ pipeline {
 				   echo "${aws_url}"
             }
           }
+        }
+		stage ('docker build and push the images') {
+            steps {
+                dir("devops/${parametersMaps.releaseName}/Docker/${parametersMaps.profile}"){
+                    script {
+                            dockerImageName = "mobilebilling".toLowerCase()
+                            def awsLogin  = sh(script: "aws ecr get-login --region eu-central-1 --no-include-email", returnStdout: true)
+                            sh "${awsLogin}"
+                            docker.build("${aws_url}/${dockerImageName}:${BUILD_NUMBER}","-f MobileBillingDockerfile .").push()
+                    }
+                }
+            }
         }
 		stage('Test On Master') {
 			 steps {
