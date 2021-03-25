@@ -1,0 +1,29 @@
+{
+	"family": "mobilebilling",
+	"networkMode": "host",
+	"volumes": [
+		{
+			"name": "config",
+			"host": {
+				"sourcePath": "/mnt/efs"
+			}
+		}
+	],
+	"containerDefinitions": [
+		{
+			"image": "607187345607.dkr.ecr.eu-central-1.amazonaws.com/mobilebilling:%BUILD_NUMBER%",
+			"name": "mobilebilling",
+			"cpu": 400,
+			"logConfiguration": {
+				"logDriver": "awslogs",
+				"options": {
+					"awslogs-group": "AWS_ECS",
+					"awslogs-region": "eu-central-1",
+					"awslogs-stream-prefix": "mobilebilling"
+				}
+			},
+			"memoryReservation": 400,
+			"essential": true
+		}
+	]
+}
