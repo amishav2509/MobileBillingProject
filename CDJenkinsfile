@@ -25,18 +25,7 @@ pipeline {
               }
             }
           }
-  		stage ('docker build and push the images') {
-              steps {
-                 script {
-					 dir('devops'){
-							  dockerImageName = "mobilebilling"
-                              def awsLogin  = sh(script: "aws ecr get-login --region eu-central-1 --no-include-email", returnStdout: true)
-                              sh "${awsLogin}"
-                              docker.build("${aws_url}/${dockerImageName}:${params.dockerBuildNumber}").pull()
-                      }
-                  }
-			}
-        }
+  		
 		
 		stage('register the task definition with aws'){
             steps{
