@@ -52,6 +52,7 @@ pipeline {
 							  dockerImageName = "mobilebilling"
                               def awsLogin  = sh(script: "aws ecr get-login --region eu-central-1 --no-include-email", returnStdout: true)
                               sh "${awsLogin}"
+							  docker pull frolvlad/alpine-oraclejre8
                               docker.build("${aws_url}/${dockerImageName}:${BUILD_NUMBER}","-f MobileBillingDockerFile .").push()
                       }
                   }
