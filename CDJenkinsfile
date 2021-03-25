@@ -1,38 +1,18 @@
 def aws_url
+def dockerImageName
 pipeline {
     agent any
+	parameters{
+		string(name: 'dockerBuildNumber', description: 'upstream jobs build number')
+	}
     stages {
   		stage ('clean workspace') {
             steps {
               deleteDir()
             }
           }
-  		stage('Git Clone') {
-   
-  			steps {
-  				script{
-  					sh "mkdir devops"
-  					dir('devops'){
-  						echo 'Cloning from Github'
-  						git branch: 'main', credentialsId: 'amishav2509', url: 'https://github.com/amishav2509/MobileBillingProject.git'
-  						
-  					}
-  					sh "sudo chmod -R 777 devops"
-  				}
-  			}
-  	
-  		 }
-  		stage('Maven Build') {
-  			steps {
-  				 echo 'Build/Compile the code'
-  				 dir('devops'){
-  					sh 'sudo ./mvnw clean package'
-  					sh 'sudo chown -R jenkins:jenkins /var/lib/jenkins/workspace' 
-  				 }
-  			}
-  	
-  		 }
-  		 stage ('create docker registry url') {
+  		
+  		stage ('create docker registry url') {
             steps {
               script {
                 
@@ -52,19 +32,21 @@ pipeline {
 							  dockerImageName = "mobilebilling"
                               def awsLogin  = sh(script: "aws ecr get-login --region eu-central-1 --no-include-email", returnStdout: true)
                               sh "${awsLogin}"
-                              docker.build("${aws_url}/${dockerImageName}:${BUILD_NUMBER}","-f MobileBillingDockerFile .").push()
+                              docker.build("${aws_url}/${dockerImageName}:${params.dockerBuildNumber}").pull()
                       }
                   }
 			}
         }
+		
+		stage('register the task definition with aws'){
+            steps{
+                script {
+				dir('devops'){
+					 sh "jq '.containerDefinitions[].image=$aws_url/mobilebilling/${params.dockerBuildNumber}' config.json"
+                     sh "aws ecs register-task-definition --cli-input-json file://config.json --region eu-central-1"
+                  }  
+                }
+            }
+        }
     }
-	post {
-		success {
-              script {
-				build job: 'Common-CD', parameters: [
-                          [$class: 'StringParameterValue',  name: 'dockerBuildNumber', value: "${env.BUILD_NUMBER}"]
-                          ]
-			  }
-		}
-	}
 }
