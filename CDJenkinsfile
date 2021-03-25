@@ -7,11 +7,6 @@ pipeline {
 		string(name: 'dockerBuildNumber', description: 'upstream jobs build number')
 	}
     stages {
-  		stage ('clean workspace') {
-            steps {
-              deleteDir()
-            }
-          }
   		
   		stage ('create docker registry url') {
             steps {
@@ -36,7 +31,7 @@ pipeline {
 					 //sh "jq '.containerDefinitions[].image = ${imageID}' config.json"
 					 //sh "sed -i '/"image/": /"myimage/"//s///"myimage/"/$aws_url/mobilebilling/${params.dockerBuildNumber}/'"
 					 sh "jq --arg aws_url \"$aws_url\" --arg dockerBuildNumber \"${params.dockerBuildNumber}\" '.containerDefinitions[].image = \"$aws_url/mobilebilling/$dockerBuildNumber\"' config.json"
-                     sh "aws ecs register-task-definition --cli-input-json file://config.json --region eu-central-1"
+                     sh "aws ecs register-task-definition --cli-input-json file:///var/lib/jenkins/workspace/Maven_project_buildPipeline/devops/config.json --region eu-central-1"
                   }  
                 }
             }
