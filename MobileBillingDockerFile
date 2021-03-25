@@ -1,4 +1,4 @@
 FROM adoptopenjdk/openjdk8:latest 
 VOLUME /tmp
 RUN mkdir /classpath && chmod -R 774 /classpath
-ADD *.war MobileBillingProject.war
+# ADD *.war MobileBillingProject.war
