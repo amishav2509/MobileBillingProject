@@ -35,7 +35,7 @@ pipeline {
 					 //imageID = $aws_url/mobilebilling/${params.dockerBuildNumber}
 					 //sh "jq '.containerDefinitions[].image = ${imageID}' config.json"
 					 //sh "sed -i '/"image/": /"myimage/"//s///"myimage/"/$aws_url/mobilebilling/${params.dockerBuildNumber}/'"
-					 sh "jq --arg aws_url /"$aws_url/" --arg dockerBuildNumber /"${params.dockerBuildNumber}/" '.containerDefinitions[].image = $aws_url/mobilebilling/$dockerBuildNumber' config.json"
+					 sh "jq --arg aws_url \"$aws_url\" --arg dockerBuildNumber \"${params.dockerBuildNumber}\" '.containerDefinitions[].image = $aws_url/mobilebilling/$dockerBuildNumber' config.json"
                      sh "aws ecs register-task-definition --cli-input-json file://config.json --region eu-central-1"
                   }  
                 }
