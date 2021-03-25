@@ -31,7 +31,7 @@ pipeline {
             steps{
                 script {
 				dir('devops'){
-					 sh "jq '.containerDefinitions[].image=$aws_url/mobilebilling/${params.dockerBuildNumber}' config.json"
+					 sh "jq '.containerDefinitions[].image = $aws_url/mobilebilling/${params.dockerBuildNumber}' config.json"
                      sh "aws ecs register-task-definition --cli-input-json file://config.json --region eu-central-1"
                   }  
                 }
