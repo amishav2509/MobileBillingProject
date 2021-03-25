@@ -1,5 +1,6 @@
 def aws_url
 def dockerImageName
+def imageID
 pipeline {
     agent any
 	parameters{
@@ -31,7 +32,7 @@ pipeline {
             steps{
                 script {
 				dir('devops'){
-					 def imageID = $aws_url/mobilebilling/${params.dockerBuildNumber}
+					 imageID = $aws_url/mobilebilling/${params.dockerBuildNumber}
 					 sh "jq '.containerDefinitions[].image = ${imageID}' config.json"
 					 //sh "sed -i '/"image/": /"myimage/"//s///"myimage/"/$aws_url/mobilebilling/${params.dockerBuildNumber}/'"
                      sh "aws ecs register-task-definition --cli-input-json file://config.json --region eu-central-1"
