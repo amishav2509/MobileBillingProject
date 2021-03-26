@@ -29,7 +29,7 @@ pipeline {
 				dir('devops'){
 					 
 					 sh "cp /var/lib/jenkins/workspace/Maven_project_buildPipeline/devops/config.json ."
-					 sh "jq  --arg aws_url \"$aws_url\" --arg dockerBuildNumber \"${params.dockerBuildNumber}\" '.containerDefinitions[].image = \"$aws_url/mobilebilling/$dockerBuildNumber\"' config.json > task.json"
+					 sh "jq  --arg aws_url \"$aws_url\" --arg dockerBuildNumber \"${params.dockerBuildNumber}\" '.containerDefinitions[].image = \"$aws_url/mobilebilling:$dockerBuildNumber\"' config.json > task.json"
                      sh "aws ecs register-task-definition --cli-input-json file://task.json --region eu-central-1"
                   }  
                 }
