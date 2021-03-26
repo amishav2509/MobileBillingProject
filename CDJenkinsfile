@@ -38,7 +38,6 @@ pipeline {
 		stage ('check service and create service'){
             steps {
                     script {
-                        println parametersMaps as String
                         try {
                             def serviceExist=sh(script: "`aws ecs describe-services --services mobilebilling --cluster mobilebilling --region eu-central-1 | jq .failures[]`", returnStdout: true)
                             sh "aws ecs describe-task-definition --task-definition mobilebilling --region eu-central-1 | jq .taskDefinition.revision > revisionFile"
